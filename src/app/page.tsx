@@ -19,7 +19,9 @@ export default async function Home() {
             </Suspense>
           </div>
           <div className="lg:col-span-1">
-            <ChatInterface />
+            <div className="sticky top-6">
+              <ChatInterface />
+            </div>
           </div>
         </div>
       </div>

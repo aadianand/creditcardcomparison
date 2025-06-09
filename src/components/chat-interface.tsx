@@ -96,8 +96,8 @@ export default function ChatInterface() {
   ]
 
   return (
-    <Card className="h-[700px] flex flex-col">
-      <CardHeader>
+    <Card className="h-[600px] flex flex-col shadow-lg border-2">
+      <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5">
         <CardTitle className="flex items-center gap-2">
           <Bot size={20} />
           AI Credit Card Expert
@@ -107,20 +107,20 @@ export default function ChatInterface() {
           Ask me anything about credit cards - I have comprehensive knowledge of all cards and banks!
         </p>
       </CardHeader>
-      <CardContent className="flex-grow overflow-y-auto mb-4">
+      <CardContent className="flex-grow overflow-y-auto mb-4 p-4">
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
                 className={`
-                  max-w-[90%] rounded-lg p-4 
+                  max-w-[90%] rounded-lg p-3 
                   ${message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"}
                 `}
               >
-                <div className="flex items-start gap-3">
-                  {message.role === "assistant" && <Bot size={20} className="mt-0.5 flex-shrink-0" />}
-                  {message.role === "user" && <User size={20} className="mt-0.5 flex-shrink-0" />}
-                  <div className="text-sm whitespace-pre-line leading-relaxed prose prose-sm max-w-none dark:prose-invert">
+                <div className="flex items-start gap-2">
+                  {message.role === "assistant" && <Bot size={16} className="mt-0.5 flex-shrink-0" />}
+                  {message.role === "user" && <User size={16} className="mt-0.5 flex-shrink-0" />}
+                  <div className="text-xs whitespace-pre-line leading-relaxed prose prose-xs max-w-none dark:prose-invert">
                     {message.content}
                   </div>
                 </div>
@@ -129,15 +129,15 @@ export default function ChatInterface() {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-lg p-4 bg-muted">
-                <div className="flex items-center gap-3">
-                  <Bot size={20} />
+              <div className="max-w-[80%] rounded-lg p-3 bg-muted">
+                <div className="flex items-center gap-2">
+                  <Bot size={16} />
                   <div className="flex gap-1">
-                    <span className="animate-bounce">●</span>
-                    <span className="animate-bounce delay-100">●</span>
-                    <span className="animate-bounce delay-200">●</span>
+                    <span className="animate-bounce text-xs">●</span>
+                    <span className="animate-bounce delay-100 text-xs">●</span>
+                    <span className="animate-bounce delay-200 text-xs">●</span>
                   </div>
-                  <span className="text-sm text-muted-foreground">Analyzing credit card data...</span>
+                  <span className="text-xs text-muted-foreground">Analyzing credit card data...</span>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function ChatInterface() {
           <div ref={messagesEndRef} />
         </div>
       </CardContent>
-      <div className="px-4 mb-3">
+      <div className="px-4 mb-2">
         <div className="text-xs text-muted-foreground mb-2">Quick questions:</div>
         <div className="flex flex-wrap gap-1">
           {quickPrompts.slice(0, 4).map((prompt, index) => (
@@ -154,9 +154,9 @@ export default function ChatInterface() {
               variant="outline"
               size="sm"
               onClick={() => handleQuickPrompt(prompt)}
-              className="text-xs h-7"
+              className="text-xs h-6 px-2"
             >
-              {prompt}
+              {prompt.length > 15 ? prompt.substring(0, 15) + "..." : prompt}
             </Button>
           ))}
         </div>
@@ -167,24 +167,24 @@ export default function ChatInterface() {
               variant="outline"
               size="sm"
               onClick={() => handleQuickPrompt(prompt)}
-              className="text-xs h-7"
+              className="text-xs h-6 px-2"
             >
-              {prompt}
+              {prompt.length > 15 ? prompt.substring(0, 15) + "..." : prompt}
             </Button>
           ))}
         </div>
       </div>
-      <CardFooter className="pt-0">
+      <CardFooter className="pt-0 pb-4">
         <form onSubmit={handleSubmit} className="flex w-full gap-2">
           <Input
             placeholder="Ask me anything about credit cards..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isLoading}
-            className="flex-1"
+            className="flex-1 text-sm"
           />
           <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-            <Send size={18} />
+            <Send size={16} />
           </Button>
         </form>
       </CardFooter>
