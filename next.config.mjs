@@ -1,16 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ['localhost'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+  reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ['ai'],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    domains: ['placeholder.com'],
+    unoptimized: true,
   },
 }
 

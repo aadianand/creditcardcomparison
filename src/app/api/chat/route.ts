@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server"
 import { getAllCards } from "@/lib/data"
+import type { CreditCard, CardBenefit } from "@/lib/data"
 
 // Enhanced AI response function that provides comprehensive answers without UI changes
-function generateComprehensiveResponse(message: string, cards: any[]) {
+function generateComprehensiveResponse(message: string, cards: CreditCard[]) {
   const lowerMessage = message.toLowerCase()
 
   // Helper function to format card information
-  const formatCardInfo = (card: any, includeDetails = true) => {
+  const formatCardInfo = (card: CreditCard, includeDetails = true) => {
     const benefits = card.benefits
       .slice(0, 3)
-      .map((b: any) => `${b.type}: ${b.description}`)
+      .map((b: CardBenefit) => `${b.type}: ${b.description}`)
       .join(", ")
     const features = []
     if (card.features.loungeAccess) features.push("Lounge Access")
@@ -110,7 +111,7 @@ Want to know more about any specific SBI card or compare with other options?`,
   if (containsKeywords(["icici", "icici bank"])) {
     const iciciCards = cards.filter((card) => card.bank.toLowerCase().includes("icici"))
     return {
-      response: `🏦 **ICICI Bank Credit Cards**
+      response: `��� **ICICI Bank Credit Cards**
 
 ICICI Bank features ${iciciCards.length} popular credit cards:
 
@@ -139,7 +140,7 @@ I found ${loungeCards.length} cards that offer complimentary airport lounge acce
 
 ${loungeCards
   .map((card) => {
-    const loungeInfo = card.benefits.find((b: any) => b.type === "Lounge Access")
+    const loungeInfo = card.benefits.find((b: CardBenefit) => b.type === "Lounge Access")
     return `**${card.bank} ${card.name}**
 • Annual Fee: ${card.annualFee === 0 ? "Free" : `₹${card.annualFee.toLocaleString()}`}
 • Lounge Access: ${loungeInfo?.value || "Available"}
@@ -206,7 +207,7 @@ Save money on every fuel purchase with these ${fuelCards.length} cards:
 
 ${fuelCards
   .map((card) => {
-    const fuelBenefit = card.benefits.find((b: any) => b.description.toLowerCase().includes("fuel"))
+    const fuelBenefit = card.benefits.find((b: CardBenefit) => b.description.toLowerCase().includes("fuel"))
     return `**${card.bank} ${card.name}**
 • Annual Fee: ${card.annualFee === 0 ? "Free" : `₹${card.annualFee.toLocaleString()}`}
 • Fuel Benefit: ${fuelBenefit?.description || "Fuel surcharge waiver available"}
@@ -269,7 +270,7 @@ Need help choosing the best free card for your spending pattern?`,
   if (containsKeywords(["cashback", "cash back", "money back", "rewards", "earning", "points"])) {
     const cashbackCards = cards.filter(
       (card) =>
-        card.benefits.some((benefit: any) => benefit.type === "Cashback") ||
+        card.benefits.some((benefit: CardBenefit) => benefit.type === "Cashback") ||
         card.name.toLowerCase().includes("cashback") ||
         card.name.toLowerCase().includes("amazon") ||
         card.name.toLowerCase().includes("millennia"),
@@ -281,8 +282,8 @@ Earn money back on every purchase with these ${cashbackCards.length} high-earnin
 
 ${cashbackCards
   .map((card) => {
-    const cashbackBenefit = card.benefits.find((b: any) => b.type === "Cashback")
-    const rewardBenefit = card.benefits.find((b: any) => b.type === "Reward Points")
+    const cashbackBenefit = card.benefits.find((b: CardBenefit) => b.type === "Cashback")
+    const rewardBenefit = card.benefits.find((b: CardBenefit) => b.type === "Reward Points")
     return `**${card.bank} ${card.name}**
 • Annual Fee: ${card.annualFee === 0 ? "Free" : `₹${card.annualFee.toLocaleString()}`}
 • Cashback/Rewards: ${cashbackBenefit?.description || rewardBenefit?.description || `${card.rewardRate}x reward points`}
@@ -327,7 +328,7 @@ Shop online and earn maximum rewards with these ${onlineCards.length} cards:
 ${onlineCards
   .map((card) => {
     const onlineBenefit = card.benefits.find(
-      (b: any) =>
+      (b: CardBenefit) =>
         b.description.toLowerCase().includes("online") ||
         b.description.toLowerCase().includes("amazon") ||
         b.description.toLowerCase().includes("flipkart"),
@@ -335,7 +336,7 @@ ${onlineCards
     return `**${card.bank} ${card.name}**
 • Annual Fee: ${card.annualFee === 0 ? "Free" : `₹${card.annualFee.toLocaleString()}`}
 • Online Benefits: ${onlineBenefit?.description || `${card.rewardRate}x rewards on online spending`}
-• Special Offers: ${card.offers.map((o: any) => o.title).join(", ")}
+• Special Offers: ${card.offers.map((o) => o.title).join(", ")}
 • Perfect For: ${card.targetAudience.join(", ")}`
   })
   .join("\n\n")}
@@ -372,7 +373,8 @@ Ready to maximize your online shopping rewards?`,
   if (containsKeywords(["compare", "vs", "versus", "difference", "between", "comparison"])) {
     // Extract specific card names if mentioned
     const mentionedCards = cards.filter(
-      (card: any) => lowerMessage.includes(card.name.toLowerCase()) || lowerMessage.includes(card.bank.toLowerCase()),
+      (card: CreditCard) =>
+        lowerMessage.includes(card.name.toLowerCase()) || lowerMessage.includes(card.bank.toLowerCase()),
     )
 
     if (mentionedCards.length >= 2) {
@@ -420,7 +422,7 @@ I can help you compare any credit cards! Here are all the cards available for co
 
 ${cards
   .map(
-    (card: any, index: number) =>
+    (card: CreditCard, index: number) =>
       `${index + 1}. **${card.bank} ${card.name}** - ₹${card.annualFee === 0 ? "Free" : card.annualFee.toLocaleString()} annual fee, ${card.rewardRate}x rewards`,
   )
   .join("\n")}
@@ -484,7 +486,7 @@ ${travelCards
 • Travel Benefits: ${travelBenefits.join(", ") || "Standard travel features"}
 • Reward Rate: ${card.rewardRate}x points on travel spending
 • Additional Perks: ${card.offers
-      .map((o: any) => o.title)
+      .map((o) => o.title)
       .slice(0, 2)
       .join(", ")}
 • Best For: ${card.targetAudience.join(", ")}`
@@ -594,10 +596,10 @@ Ready to elevate your credit card experience to premium status?`,
 I'm your AI assistant with comprehensive knowledge of all ${cards.length} credit cards in our database. I can help you with detailed information about:
 
 **Available Credit Cards by Bank:**
-🏦 **HDFC Bank:** ${cards.filter((c: any) => c.bank.includes("HDFC")).length} cards (Regalia, Millennia)
-🏦 **Axis Bank:** ${cards.filter((c: any) => c.bank.includes("Axis")).length} cards (Magnus, Flipkart)
-🏦 **SBI Card:** ${cards.filter((c: any) => c.bank.includes("SBI")).length} cards (ELITE, SimplyCLICK)
-🏦 **ICICI Bank:** ${cards.filter((c: any) => c.bank.includes("ICICI")).length} cards (Amazon Pay, Coral)
+🏦 **HDFC Bank:** ${cards.filter((c: CreditCard) => c.bank.includes("HDFC")).length} cards (Regalia, Millennia)
+🏦 **Axis Bank:** ${cards.filter((c: CreditCard) => c.bank.includes("Axis")).length} cards (Magnus, Flipkart)
+🏦 **SBI Card:** ${cards.filter((c: CreditCard) => c.bank.includes("SBI")).length} cards (ELITE, SimplyCLICK)
+🏦 **ICICI Bank:** ${cards.filter((c: CreditCard) => c.bank.includes("ICICI")).length} cards (Amazon Pay, Coral)
 
 **What I Can Help You With:**
 
@@ -645,11 +647,13 @@ export async function POST(req: Request) {
     const { message } = await req.json()
     const cards = await getAllCards()
 
-    // Convert cards to a simplified format for AI processing
+    // Convert cards to a simplified format for AI processing - include all required properties
     const cardsContext = cards.map((card) => ({
       id: card.id,
       name: card.name,
       bank: card.bank,
+      bankLogo: card.bankLogo,
+      cardImage: card.cardImage,
       annualFee: card.annualFee,
       joiningFee: card.joiningFee,
       rewardRate: card.rewardRate,

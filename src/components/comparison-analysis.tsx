@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import type { CreditCard } from "@/lib/data"
 
 interface ComparisonAnalysisProps {
@@ -11,11 +11,7 @@ export default function ComparisonAnalysis({ cards }: ComparisonAnalysisProps) {
   const [analysis, setAnalysis] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    generateAnalysis()
-  }, [cards])
-
-  const generateAnalysis = async () => {
+  const generateAnalysis = useCallback(async () => {
     setIsLoading(true)
 
     try {
@@ -32,7 +28,7 @@ export default function ComparisonAnalysis({ cards }: ComparisonAnalysisProps) {
         setIsLoading(false)
         return
       }
-    } catch (error) {
+    } catch (err) {
       console.log("AI analysis failed, using fallback")
     }
 
@@ -40,7 +36,11 @@ export default function ComparisonAnalysis({ cards }: ComparisonAnalysisProps) {
     const fallbackAnalysis = generateFallbackAnalysis(cards)
     setAnalysis(fallbackAnalysis)
     setIsLoading(false)
-  }
+  }, [cards])
+
+  useEffect(() => {
+    generateAnalysis()
+  }, [generateAnalysis])
 
   const generateFallbackAnalysis = (cards: CreditCard[]) => {
     const sortedByFee = [...cards].sort((a, b) => a.annualFee - b.annualFee)

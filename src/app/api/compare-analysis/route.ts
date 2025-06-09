@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         })
 
         return NextResponse.json({ analysis: text })
-      } catch (error) {
+      } catch (openaiError) {
         console.log("OpenAI failed, using fallback analysis")
       }
     }

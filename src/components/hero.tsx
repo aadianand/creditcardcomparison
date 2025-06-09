@@ -18,7 +18,7 @@ export default function Hero() {
           </Button>
         </div>
         <div className="mt-12 text-sm text-muted-foreground">
-          <p>Try asking: "Show me cards with lounge access and high cashback on fuel"</p>
+          <p>Try asking: &quot;Show me cards with lounge access and high cashback on fuel&quot;</p>
         </div>
       </div>
     </div>

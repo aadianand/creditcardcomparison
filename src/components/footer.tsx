@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function Footer() {
   return (
     <footer className="border-t py-8 mt-12">
@@ -13,24 +15,24 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/compare" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/compare" className="text-muted-foreground hover:text-primary transition-colors">
                   Compare Cards
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/banks" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/banks" className="text-muted-foreground hover:text-primary transition-colors">
                   Banks
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/chat" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/chat" className="text-muted-foreground hover:text-primary transition-colors">
                   AI Assistant
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
