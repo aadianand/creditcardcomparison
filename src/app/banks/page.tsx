@@ -2,7 +2,7 @@ import { getBanks, getCardsByBank } from "@/lib/data"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import Image from "next/image"
+import BankLogo from "@/components/bank-logo"
 
 export default async function BanksPage() {
   const banks = await getBanks()
@@ -12,21 +12,6 @@ export default async function BanksPage() {
       cards: await getCardsByBank(bank),
     })),
   )
-
-  const getBankLogo = (bankName: string) => {
-    switch (bankName) {
-      case "HDFC Bank":
-        return "/images/hdfc-logo.png"
-      case "Axis Bank":
-        return "/images/axis-logo.png"
-      case "ICICI Bank":
-        return "/images/icici-logo.png"
-      case "SBI Card":
-        return "/images/sbi-logo.png"
-      default:
-        return "/placeholder.svg?height=60&width=120"
-    }
-  }
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -41,13 +26,7 @@ export default async function BanksPage() {
             <Card key={bank.name} className="overflow-hidden">
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  <Image
-                    src={getBankLogo(bank.name) || "/placeholder.svg"}
-                    alt={`${bank.name} logo`}
-                    width={120}
-                    height={60}
-                    className="object-contain h-12 w-24"
-                  />
+                  <BankLogo bankName={bank.name} width={120} height={60} className="h-12 w-24" />
                   <div>
                     <CardTitle>{bank.name}</CardTitle>
                     <CardDescription>{bank.cards.length} credit cards available</CardDescription>

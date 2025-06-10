@@ -1,9 +1,10 @@
 import Link from "next/link"
-import Image from "next/image"
 import type { CreditCard } from "@/lib/data"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import BankLogo from "./bank-logo"
+import CardImage from "./card-image"
 
 interface CardItemProps {
   card: CreditCard
@@ -18,21 +19,15 @@ export default function CardItem({ card }: CardItemProps) {
             <p className="text-sm text-muted-foreground">{card.bank}</p>
             <h3 className="font-bold text-lg">{card.name}</h3>
           </div>
-          <Image
-            src={card.bankLogo || "/placeholder.svg"}
-            alt={`${card.bank} logo`}
-            width={80}
-            height={40}
-            className="object-contain h-8 w-16"
-          />
+          <BankLogo bankName={card.bank} width={80} height={40} className="h-8 w-16" />
         </div>
       </CardHeader>
       <CardContent className="p-4">
         <div className="flex gap-4 mb-4">
           <div className="w-1/3">
-            <Image
-              src={card.cardImage || "/placeholder.svg"}
-              alt={card.name}
+            <CardImage
+              cardName={card.name}
+              cardImage={card.cardImage}
               width={320}
               height={200}
               className="rounded-lg object-cover w-full h-24"

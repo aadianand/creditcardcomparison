@@ -1,6 +1,6 @@
 import type { CreditCard } from "@/lib/data"
 import { Check, X } from "lucide-react"
-import Image from "next/image"
+import BankLogo from "./bank-logo"
 
 interface ComparisonTableProps {
   cards: CreditCard[]
@@ -154,13 +154,7 @@ export default function ComparisonTable({ cards }: ComparisonTableProps) {
             {cards.map((card) => (
               <th key={card.id} className="text-center p-4 min-w-[200px]">
                 <div className="flex flex-col items-center gap-3">
-                  <Image
-                    src={card.bankLogo || "/placeholder.svg"}
-                    alt={`${card.bank} logo`}
-                    width={100}
-                    height={50}
-                    className="object-contain h-12 w-24 mx-auto"
-                  />
+                  <BankLogo bankName={card.bank} width={100} height={50} className="h-12 w-24 mx-auto" />
                   <div className="text-center">
                     <div className="font-bold text-base">{card.name}</div>
                     <div className="text-sm text-muted-foreground">{card.bank}</div>
